@@ -1,0 +1,36 @@
+{
+  "name": "component-connector",
+  "version": "0.0.1",
+  "description": "Easily and cleanly connect your components to many higher order components",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewgrewell/react-component-connector.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "Andrew Grewell <andrewgrewell@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrewgrewell/react-component-connector/issues"
+  },
+  "homepage": "https://github.com/andrewgrewell/react-component-connector#readme",
+  "dependencies": {
+    "lodash": "^4.17.2"
+  },
+  "devDependencies": {
+    "babel-jest": "^18.0.0",
+    "babel-preset-latest": "^6.16.0",
+    "jest": "17.0.3"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/Example/"
+    ]
+  }
+}
