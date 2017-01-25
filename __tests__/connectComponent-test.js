@@ -7,21 +7,18 @@ jest.unmock('../connectComponent');
 describe('connectComponent', () => {
     addConnector([{
         name: 'toFoo',
-        connector: () => (component) => {
-            component.foo = true;
-            return { name: 'foo', child: component };
+        connector: (...args) => (component) => {
+            return { name: 'foo', child: component, args: [...args] };
         }
     }, {
         name: 'toBar',
-        connector: () => (component) => {
-            component.bar = true;
-            return { name: 'bar', child: component };
+        connector: (...args) => (component) => {
+            return { name: 'bar', child: component, args: [...args] };
         }
     }, {
         name: 'toBaz',
-        connector: () => (component) => {
-            component.baz = true;
-            return { name: 'baz', child: component };
+        connector: (...args) => (component) => {
+            return { name: 'baz', child: component, args: [...args] };
         }
     }]);
 
@@ -30,18 +27,23 @@ describe('connectComponent', () => {
         let fooComponent = connectComponent(baseComponent).toFoo();
 
         expect(fooComponent.name).toBe('foo');
-        expect(fooComponent.child.name).toBe('baseComponent');
-        expect(fooComponent.child.foo).toBeTruthy();
     });
 
     it('connects a component to multiple connectors', () => {
         let baseComponent = { name: 'baseComponent' };
-        let fooBarComponent = connectComponent(baseComponent).toFoo().toBar();
+        let fooBarBazComponent = connectComponent(baseComponent)
+                .toBar('barArgs')
+                .toFoo('fooArgs')
+                .toBaz('bazArgs');
 
-        expect(fooBarComponent.name).toBe('foo');
-        expect(fooBarComponent.child.name).toBe('bar');
-        expect(fooBarComponent.child.child.name).toBe('baseComponent');
-        expect(fooBarComponent.child.child.foo).toBeTruthy();
+        expect(fooBarBazComponent.name).toBe('foo');
+        expect(fooBarBazComponent.child.name).toBe('bar');
+        expect(fooBarBazComponent.child.child.name).toBe('baz');
+        expect(fooBarBazComponent.child.child.child.name).toBe('baseComponent');
+
+        expect(fooBarBazComponent.args).toEqual(['fooArgs']);
+        expect(fooBarBazComponent.child.args).toEqual(['barArgs']);
+        expect(fooBarBazComponent.child.child.args).toEqual(['bazArgs']);
     });
 
 });

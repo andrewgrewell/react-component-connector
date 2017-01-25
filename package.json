@@ -1,6 +1,6 @@
 {
   "name": "component-connector",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Easily and cleanly connect your components to many higher order components",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrewgrewell/react-component-connector.git"
+    "url": "git@github.com:andrewgrewell/react-component-connector.git"
   },
   "keywords": [
     "react"

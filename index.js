@@ -1,2 +1,7 @@
-export { default as addConnector } from './addConnector';
-export { default as connectComponent } from './connectComponent';
+import addConnector from './addConnector';
+import connectComponent from './connectComponent';
+
+export default {
+    addConnector,
+    connectComponent
+};

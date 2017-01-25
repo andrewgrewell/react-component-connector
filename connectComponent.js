@@ -1,38 +1,41 @@
 import Connectors from './Connectors';
-import some from 'lodash/find';
 
-export default function connectComponent(component, order) {
-    Connectors.forEach(({ name, connector }) => {
+
+export default function connectComponent(component) {
+    Connectors.forEach(({ name }) => {
         component[name] = applyConnectors(name, component);
     });
     return component;
 }
 
-function applyConnectors(connectionName, baseComponent, indexesToApply = []) {
+function applyConnectors(connectionName, baseComponent, existingConnections = [], appliedIndexes = []) {
     return function(...args) {
         // remove connectors from component, and add this connector index to list
         Connectors.forEach(({ name }, i) => {
             if (name === connectionName) {
-                indexesToApply.push(i);
+                existingConnections.push({
+                    index: i,
+                    providedArgs: [...args]
+                });
+                appliedIndexes.push(i);
             }
             delete this[name];
         });
 
         // loops through indexes to apply and apply them in order
         let connectedComponent = baseComponent;
-        indexesToApply.sort((a, b) => (a - b) * -1);
-        indexesToApply.forEach((index) => {
+        existingConnections.sort((a, b) => b.index - a.index);
+        existingConnections.forEach(({ index, providedArgs}) => {
             let { connector } = Connectors[index];
-            connectedComponent = connector(...args)(connectedComponent)
+            connectedComponent = connector(...providedArgs)(connectedComponent);
         });
 
         // reapply remaining connectors
         Connectors.forEach(({ name }, i) => {
-            if (indexesToApply.indexOf(i) === -1) {
-                connectedComponent[name] = applyConnectors(name, baseComponent, indexesToApply);
+            if (appliedIndexes.indexOf(i) === -1) {
+                connectedComponent[name] = applyConnectors.call(this, name, baseComponent, existingConnections, appliedIndexes);
             }
         });
-
         return connectedComponent;
     }
 }
