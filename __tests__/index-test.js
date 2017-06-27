@@ -1,11 +1,10 @@
-import connectComponent from '../connectComponent';
-import addConnector from '../addConnector';
+import componentConnector from '../index.js';
 
-jest.unmock('../connectComponent');
+jest.unmock('../index.js');
 
 
 describe('connectComponent', () => {
-    addConnector([{
+    const connectors = [{
         name: 'toFoo',
         connector: (...args) => (component) => {
             return { name: 'foo', child: component, args: [...args] };
@@ -20,7 +19,9 @@ describe('connectComponent', () => {
         connector: (...args) => (component) => {
             return { name: 'baz', child: component, args: [...args] };
         }
-    }]);
+    }];
+
+    const connectComponent = componentConnector(connectors);
 
     it('connects a component to single connector', () => {
         let baseComponent = { name: 'baseComponent' };

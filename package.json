@@ -1,6 +1,6 @@
 {
   "name": "component-connector",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Easily and cleanly connect your components to many higher order components",
   "main": "index.js",
   "scripts": {
